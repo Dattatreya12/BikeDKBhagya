@@ -2,19 +2,26 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using ASPCORE.AppDBContext;
 using ASPCORE.Models;
 using ASPCORE.Models.ViewModels;
 using ASPCORE.Servcies;
 using ASPCORE.Servcies.IService;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using iTextSharp.tool.xml;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Document = iTextSharp.text.Document;
 
 namespace ASPCORE.Controllers
 {
+    [Authorize(Roles = "Admin,Exicutive")]
     public class LoanUserController : Controller
     {
         private readonly VroomDbContext _db;
@@ -45,56 +52,51 @@ namespace ASPCORE.Controllers
           return View(Luvm);
         }
 
-        public JsonResult GetbyID(int ID)
+        //public JsonResult GetbyID(int ID)
+        //{
+        //    //var Employee = _db.ListAll().Find(x => x.EmployeeID.Equals(ID));
+        //    var Employee = _loanServiceemployee.GetById(ID);
+        //    //var Employee= _db.makes.Find(ID);
+        //    string jsonresult = JsonConvert.SerializeObject(Employee);
+        //    dynamic DynamicData = JsonConvert.DeserializeObject(jsonresult);
+        //    return Json(DynamicData);
+        //}
+
+        public  PartialViewResult GetbyID(int ID)
         {
             //var Employee = _db.ListAll().Find(x => x.EmployeeID.Equals(ID));
             var Employee = _loanServiceemployee.GetById(ID);
+            return PartialView("_lndividual_loan_details", Employee);
             //var Employee= _db.makes.Find(ID);
-            string jsonresult = JsonConvert.SerializeObject(Employee);
-            dynamic DynamicData = JsonConvert.DeserializeObject(jsonresult);
-            return Json(DynamicData);
+
         }
 
         [HttpPost]
-        public IActionResult Insert( LoanuserViewModels item)
+        public async Task <IActionResult> Insert( LoanuserViewModels item)
         {
-            var newloan = new LoanuserViewModels()
+            if(ModelState.IsValid)
             {
-                FirstName = item.lu.FirstName,
-                LastName = item.lu.LastName,
-                Phoneno = item.lu.Phoneno,
-                address = item.lu.address,
-                Loanstatus = item.lu.Loanstatus,
-                ImagePath = item.lu.ImagePath,
-            };
-            int id = _loanServiceemployee.Insert(newloan);
-            //var BikeId = BikeVM.Bike.Id;
-            var loanid = id;
-
-            string wwrootPath = _hostingenvironment.WebRootPath;
-
-            var files = HttpContext.Request.Form.Files;
-
-            var savedBike = _db.Loanusers.Find(loanid);
-
-            if (files.Count != 0)
-            {
-                var ImagePath = @"images\bike";
-                var Extension = Path.GetExtension(files[0].FileName);
-                var RelativeImagePath = ImagePath + loanid + Extension;
-                var AbsImagePath = Path.Combine(wwrootPath, RelativeImagePath);
-
-                using (var filestream = new FileStream(AbsImagePath, FileMode.Create))
+                if(item.CoverImage!=null)
                 {
-                    files[0].CopyTo(filestream);
+                    string folder = "Loan/loanperimg/";
+                    folder += Guid.NewGuid().ToString() + "_" + item.CoverImage.FileName;
+                    item.ImagePath = "/"+folder;
+                    string serverFolder = Path.Combine(_hostingenvironment.WebRootPath, folder);
+                    await item.CoverImage.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
                 }
-
-                savedBike.ImagePath = RelativeImagePath;
-                _db.SaveChanges();
             }
+            int id = _loanServiceemployee.Insert(item);
+            if(id > 0)
+            {
+                return View(Luvm);
+            }
+            else
+            {
+
+            }
+           
             return View(Luvm);
         }
-
 
     }
 }

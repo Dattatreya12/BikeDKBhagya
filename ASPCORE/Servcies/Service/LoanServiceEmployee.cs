@@ -82,27 +82,22 @@ namespace ASPCORE.Servcies
             return empDetails;
         }
 
-        public int Insert(Loanusers item)
-        {
-            // throw new NotImplementedException();
-           // Loanusers dbsave = new Loanusers();
-            //var newloan = new Loanusers()
-            //{
-            //    FirstName = item.FirstName,
-            //    LastName = item.LastName,
-            //    Phoneno = item.Phoneno,
-            //    address = item.address,
-            //    Loanstatus = item.Loanstatus,
-            //    ImagePath = item.ImagePath,
-            //};
-            _db.Loanusers.Add(item);
-            _db.SaveChanges();
-            return item.Id;
-        }
-
         public int Insert(LoanuserViewModels item)
         {
-            throw new NotImplementedException();
+            // throw new NotImplementedException();
+            
+            var newloan = new Loanusers()
+            {
+                FirstName = item.FirstName,
+                LastName = item.LastName,
+                Phoneno = item.Phoneno,
+                address = item.address,
+                Loanstatus = item.Loanstatus,
+                ImagePath = item.ImagePath,
+            };
+            _db.Loanusers.Add(newloan);
+            _db.SaveChanges();
+            return newloan.Id;
         }
 
         public int Update(Loanusers item, int id)

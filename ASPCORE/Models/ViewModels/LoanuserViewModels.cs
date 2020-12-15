@@ -1,20 +1,21 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ASPCORE.Models.ViewModels
 {
-    public class LoanuserViewModels
+    public class LoanuserViewModels:Loanusers
     {
-        public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string address { get; set; }
-        public string Phoneno { get; set; }
-        public string Loanstatus { get; set; }
-        public string ImagePath { get; set; }
-
+        //public int Id { get; set; }
+        //public string FirstName { get; set; }
+        //public string LastName { get; set; }
+        //public string address { get; set; }
+        //public string Phoneno { get; set; }
+        //public string Loanstatus { get; set; }
+        //public string ImagePath { get; set; }
+        public IFormFile CoverImage { get; set; }
         public int LoanusersId { get; set; }
         public int Emi { get; set; }
         public int TotalLoanAmount { get; set; }

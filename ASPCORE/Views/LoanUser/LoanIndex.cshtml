@@ -3,6 +3,7 @@
     ViewData["Title"] = "LoanIndex";
 }
 <br />
+
 <div id="mainpage">
     <div class="row">
         <div class="col-md-6">
@@ -15,7 +16,7 @@
         <div class="col-12">
             <table class="table table-striped border">
                 <tr class="table-info">
-                  
+
                     <th>Image</th>
                     <th>Personal Details</th>
                     <th>Address&PhoneNumber</th>
@@ -25,15 +26,13 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                       
+
                         <td><img src="@Html.DisplayFor(m => item.ImagePath)" width="150" height="100" /></td>
                         <td>
                             <b>Name</b> :<b>@Html.DisplayFor(m => item.FirstName)</b>
                             <b>LastName</b>:<b>@Html.DisplayFor(m => item.LastName)</b><br />
                             <b>Status:</b>@Html.DisplayFor(m => item.Loanstatus)<br />
-
                         </td>
-
                         <td>
                             <b>Phone Number:</b>@Html.DisplayFor(m => item.Phoneno)<br />
                             <b>Address:</b>@Html.DisplayFor(m => item.address)<br />
@@ -41,7 +40,7 @@
                         </td>
                         <td>
                             @*<a href="/LoanUser/LoanIndex/@item.Id" class="btn btn-sm btn-outline-secondary">View Loan Details</a>*@
-                            <input type="button" value="View Loan Details" class="btn btn-outline-dark" onclick="getCarOwnersusingAjax(@item.Id)" />
+                            <input type="button" value="View Loan Details" class="btn btn-outline-dark" onclick="getLoanDetails(@item.Id)" />
                         </td>
                         <partial name="_EditDeleteTablePartial" model="item.Id" />
 
@@ -52,61 +51,89 @@
     </div>
 </div>
 
-<div id="loandetails">
-        <div class="container">
-            <h2>Loan Details</h2>
-            <div class="bg-light shadow-lg" >
-                <div class="row">
-                    <div class="col-md-4">
-                        <img src="\images\bike1.jpg" alt="" id="img1" height="100" width="100" />
-                    </div>
-                    <div class="col-md-4">
-                        <label typeof="text">FirstName</label>
-                        <input type="text" id="fName" disabled="disabled" />
-                       </div>
-                    <div class="col-md-4">
-                        <label typeof="text">LastName</label>
-                        <input type="text" id="lName" disabled="disabled" />
-                    </div>
-                </div>
-                <div class="row ">
-                    <div class="col-md-4">
-                        @*<label typeof="text">Phone Number</label>
-                        <input type="text" id="phoneno" disabled="disabled" />*@
-                    </div>
-                    <div class="col-md-4">
-                        <label typeof="text">Phone Number</label>
-                        <input type="text" id="phoneno" disabled="disabled" />
-                       </div>
+<!--Bootstrap Pop Up modal-->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
 
-                    <div class="col-md-4">
-                        <label typeof="text">Emi</label>
-                        <input type="text" id="emi" disabled="disabled" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-
-                    </div>
-                    <div class="col-md-4">
-                        <label typeof="text">TotalLoanAmount</label>
-                        <input type="text" id="totalamount" disabled="disabled" />
-                       
-                    </div>
-                    <div class="col-md-4">
-                        <label typeof="text">Monthly Pay Emi</label>
-                        <input type="text" id="memi" disabled="disabled" />
-                    </div>
-                </div>
-
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h4 class="modal-title ">Loan details</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
-            <br />
-            <input type="button" id="btnback" value="Back" class="btn btn-outline-dark" />
+            <div class="modal-body" id="ModalBody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
     </div>
- </div>
+</div>
+
+
+
+<!--End of Bootstrap Pop-Up modal-->
+@*<div id="partial" data-ajax="true"></div>*@
+
+
+@*<div id="loandetails">
+           <div class="container">
+               <h2>Loan Details</h2>
+               <div class="bg-light shadow-lg" >
+                   <div class="row">
+                       <div class="col-md-4">
+                           <img src="" alt="" id="img1" height="100" width="100" />
+                       </div>
+                       <div class="col-md-4">
+                           <label typeof="text">FirstName</label>
+                           <input type="text" id="fName" disabled="disabled" />
+                          </div>
+                       <div class="col-md-4">
+                           <label typeof="text">LastName</label>
+                           <input type="text" id="lName" disabled="disabled" />
+                       </div>
+                   </div>
+                   <div class="row ">
+                       <div class="col-md-4">
+                           @*<label typeof="text">Phone Number</label>
+                           <input type="text" id="phoneno" disabled="disabled" />
+                       </div>
+                       <div class="col-md-4">
+                           <label typeof="text">Phone Number</label>
+                           <input type="text" id="phoneno" disabled="disabled" />
+                          </div>
+
+                       <div class="col-md-4">
+                           <label typeof="text">Emi</label>
+                           <input type="text" id="emi" disabled="disabled" />
+                       </div>
+                   </div>
+                   <div class="row">
+                       <div class="col-md-4">
+
+                       </div>
+                       <div class="col-md-4">
+                           <label typeof="text">TotalLoanAmount</label>
+                           <input type="text" id="totalamount" disabled="disabled" />
+
+                       </div>
+                       <div class="col-md-4">
+                           <label typeof="text">Monthly Pay Emi</label>
+                           <input type="text" id="memi" disabled="disabled" />
+                       </div>
+                   </div>
+
+               </div>
+               <br />
+               <input type="button" id="btnback" value="Back" class="btn btn-outline-dark" />
+       </div>
+    </div>*@
+
 @section scripts
     {
     <script type="text/javascript">
+
         $(document).ready(function () {
             $('#loandetails').hide();
             $('#btnback').click(function () {
@@ -114,29 +141,32 @@
                 $('#mainpage').show();
             })
         });
-            function getCarOwnersusingAjax(loanid) {
-                $.ajax({  
-                        url: "/LoanUser/getbyID/" + loanid,  
-                        type: "GET",  
-                        contentType: "application/json;charset=UTF-8",  
-                        dataType: "json",  
-                        success: function (result) {
-                            $('img#img1').val(result.ImagePath);
-                            $('input#fName').val(result.FirstName);  
-                            $('input#lName').val(result.LastName); 
-                            $('input#phoneno').val(result.Phoneno);
-                            $('input#emi').val(result.Emi); 
-                            $('input#totalamount').val(result.TotalLoanAmount);
-                            $('input#memi').val(result.MonthlyEmi); 
-                            $('#loandetails').show();
-                            $('#mainpage').hide();
-                           
-                        },  
-                        error: function (errormessage) {  
-                            alert(errormessage.responseText);  
-                        }  
-                 });  
-                return false;
-            }
+        function getLoanDetails(loanid) {
+            $.ajax({
+                url: "/LoanUser/getbyID/" + loanid,
+                type: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "html",
+                success: function (response) {
+                    $('#ModalBody').html(response);
+                    $('#myModal').modal('show');
+                    //$('img#img1').val(result.ImagePath);
+                    //$('input#fName').val(result.FirstName);
+                    //$('input#lName').val(result.LastName);
+                    //$('input#phoneno').val(result.Phoneno);
+                    //$('input#emi').val(result.Emi);
+                    //$('input#totalamount').val(result.TotalLoanAmount);
+                    //$('input#memi').val(result.MonthlyEmi);
+                    //$('#loandetails').show();
+                    //$('#mainpage').hide();
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+            //        return false;
+        }
+       
     </script>
 }
