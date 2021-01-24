@@ -41,6 +41,7 @@ namespace ASPCORE.Controllers
         }
         public IActionResult LoanIndex()
         {
+            ViewBag.loancount = _loanServiceemployee.TotalLoanCount();
             var loanusers = _loanServiceemployee.GetAll();
             return View(loanusers);
         }

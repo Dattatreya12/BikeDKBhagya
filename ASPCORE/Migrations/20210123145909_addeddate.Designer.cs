@@ -4,14 +4,16 @@ using ASPCORE.AppDBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ASPCORE.Migrations
 {
     [DbContext(typeof(VroomDbContext))]
-    partial class VroomDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210123145909_addeddate")]
+    partial class addeddate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -216,21 +218,6 @@ namespace ASPCORE.Migrations
                     b.ToTable("models");
                 });
 
-            modelBuilder.Entity("ASPCORE.Models.PayoutDescriptionDetails", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description");
-
-                    b.Property<int>("payoutID");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("payoutDescriptionDetails");
-                });
-
             modelBuilder.Entity("ASPCORE.Models.PayOutDetails", b =>
                 {
                     b.Property<int>("ID")
@@ -246,8 +233,6 @@ namespace ASPCORE.Migrations
                     b.Property<int>("DayProfit");
 
                     b.Property<DateTime>("ExecutedDate");
-
-                    b.Property<string>("StockName");
 
                     b.Property<int>("TotalPayOut");
 

@@ -8,6 +8,7 @@ using ASPCORE.Models;
 using ASPCORE.Models.ViewModels;
 using ASPCORE.Servcies;
 using ASPCORE.Servcies.IService;
+using ASPCORE.Servcies.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Internal;
@@ -54,6 +55,8 @@ namespace ASPCORE
            .AddDefaultTokenProviders();
             services.AddScoped<IDBInitializer, DBInitialize>();
             services.AddTransient<ILaonServiceemployee<LoanuserViewModels>, LoanServiceEmployee>();
+            services.AddTransient<IstockdetailsRepository<MasterStockViewModel>, StockDetailsRepository>();
+            services.AddTransient<IprofitandLossdetailsRepository<InvestmentpayoutDetailsViewModel>, ProfitandLossdetailsRepository>();
             services.AddTransient<HostingEnvironment>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddCloudscribePagination();

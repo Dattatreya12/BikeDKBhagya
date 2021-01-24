@@ -77,11 +77,29 @@
                                     @if (User.IsInRole("Admin"))
                                     {
                                         <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Add User</a>
+                                        <a class="dropdown-item" asp-controller="LoanUser" asp-action="LoanIndex">Loan Details</a>
                                     }
 
                                     @*<div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">Something else here</a>
-                                    </div>*@
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>*@
+                                </div>
+                            </li>
+                        }
+
+                        @if (User.IsInRole(Roles.Admin) || User.IsInRole(Roles.Executive))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Stock Details
+                                </a>
+
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" asp-controller="StockDetails" asp-action="Index">Stock Details</a>
+                                    <a class="dropdown-item" asp-controller="StockDetails" asp-action="Index">Total PayIn &Aacute; PayOut</a>
+                                    @*<div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>*@
                                 </div>
                             </li>
                         }

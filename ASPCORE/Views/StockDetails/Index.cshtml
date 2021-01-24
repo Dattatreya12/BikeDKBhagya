@@ -1,0 +1,152 @@
+﻿@model IEnumerable<ASPCORE.Models.ViewModels.MasterStockViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<br />
+<br />
+<h4>Stock Details & Investment Details</h4>
+
+<div class="row">
+    <div class="col-md-8">
+        <table class="table table-striped border-dark">
+            <thead>
+                <tr class="table-info">
+                    <th>
+                        @Html.DisplayNameFor(model => model.StockName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Mode)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StockType)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TotalQuantity)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.BuyRate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.SellRate)
+                    </th>
+                    <th>
+                        Actions
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>                         
+                            @Html.DisplayFor(modelItem => item.StockName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Mode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StockType)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TotalQuantity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BuyRate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SellRate)
+                        </td>
+
+                        <td>
+                            <input type="button" value="Stock details" class="btn btn-outline-dark" onclick="getstockDetails(@item.Id)" />
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-4">
+        <table class="table table-striped border-dark">
+            <thead>
+                <tr class="table-success">
+                    <th>
+                        @Html.DisplayNameFor(model => model.FullName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TotalCapital)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FullName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TotalCapital)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<div id="myModal" class="modal fade" role="dialog" tabindex="-1" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h4 class="modal-title ">Stock details</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" id="ModalBody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+@section scripts
+    {
+    <script type="text/javascript">
+        function getstockDetails(stockid) {
+            $.ajax({
+                url: "/StockDetails/getbyID/" + stockid,
+                type: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "html",
+                success: function (response) {
+                    $('#ModalBody').html(response);
+                    $('#myModal').modal('show');
+                    //$('img#img1').val(result.ImagePath);
+                    //$('input#fName').val(result.FirstName);
+                    //$('input#lName').val(result.LastName);
+                    //$('input#phoneno').val(result.Phoneno);
+                    //$('input#emi').val(result.Emi);
+                    //$('input#totalamount').val(result.TotalLoanAmount);
+                    //$('input#memi').val(result.MonthlyEmi);
+                    //$('#loandetails').show();
+                    //$('#mainpage').hide();
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+            //        return false;
+        }
+
+    </script>
+}
+

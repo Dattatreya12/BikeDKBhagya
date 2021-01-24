@@ -2,8 +2,63 @@
 @{
     ViewData["Title"] = "LoanIndex";
 }
+
+<style type="text/css">
+    .card img {
+        transform: scale(1,1);
+        transition-duration: 500ms;
+        transition-timing-function: ease-in-out;
+    }
+
+    .card:hover img {
+        transform: scale(1.2,1.2);
+        transition-duration: 500ms;
+        transition-timing-function: ease-in-out;
+        opacity: .7;
+    }
+  
+    /*h3 {
+        text-align: center;
+        font-weight: bold;
+        background-color: cornflowerblue;
+    }*/
+</style>
 <br />
 
+
+<div class="container">
+    <h3 class="display-3 text-center font-weight-bold">All Loans</h3>
+    <h4>No Of Current Loans :@ViewBag.loancount</h4>
+    <div class="row">
+
+        @foreach (var book in Model)
+        {
+            <div class="col-md-4 bg-light" id="hvr">
+                <div class="card mb-4 shadow-lg">
+                    <div class="zen-course-thumbnail text-center">
+                        <img src=@book.ImagePath width="250" height="150" class=" img-responsive" />
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title font-weight-bold">@book.FirstName</h3>
+                        <p><b>LastName</b>:@book.LastName</p>
+                        <p class="card-text"><b>Loan Staus</b>:@book.Loanstatus</p>
+                        <p class="card-text"><b>Phone No</b>:@book.Phoneno</p>
+                        <p class="card-text"><b>Address</b>:@book.address</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                @*<a href="/Book/GetBook/@book.Id" class="btn btn-sm btn-outline-secondary">View Details</a>*@
+                                <input type="button" value="View Loan Details" class="btn btn-outline-dark" onclick="getLoanDetails(@book.Id)" />
+                            </div>
+                            @*<small class="text-muted"><b>Address</b>:@book.address</small>*@
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+ 
 <div id="mainpage">
     <div class="row">
         <div class="col-md-6">
@@ -16,35 +71,38 @@
         <div class="col-12">
             <table class="table table-striped border">
                 <tr class="table-info">
-
+                    <th>SlNo</th>
                     <th>Image</th>
                     <th>Personal Details</th>
                     <th>Address&PhoneNumber</th>
                     <th>Loan Details</th>
                     <th class="text-right">Actions</th>
                 </tr>
-                @foreach (var item in Model)
+                @foreach (var item in Model.Select((x,i) => new { data = x, Index = i }))
                 {
-                    <tr>
+                <tr>
+                    <td>
+                        @*@item.Index*@
+                        @( ((Int32)1) + item.Index )
+                    </td>
+                    <td><img src="@Html.DisplayFor(m => item.data.ImagePath)" width="150" height="100" /></td>
+                    <td>
+                        <b>Name</b> :<b>@Html.DisplayFor(m => item.data.FirstName)</b>
+                        <b>LastName</b>:<b>@Html.DisplayFor(m => item.data.LastName)</b><br />
+                        <b>Status:</b>@Html.DisplayFor(m => item.data.Loanstatus)<br />
+                    </td>
+                    <td>
+                        <b>Phone Number:</b>@Html.DisplayFor(m => item.data.Phoneno)<br />
+                        <b>Address:</b>@Html.DisplayFor(m => item.data.address)<br />
 
-                        <td><img src="@Html.DisplayFor(m => item.ImagePath)" width="150" height="100" /></td>
-                        <td>
-                            <b>Name</b> :<b>@Html.DisplayFor(m => item.FirstName)</b>
-                            <b>LastName</b>:<b>@Html.DisplayFor(m => item.LastName)</b><br />
-                            <b>Status:</b>@Html.DisplayFor(m => item.Loanstatus)<br />
-                        </td>
-                        <td>
-                            <b>Phone Number:</b>@Html.DisplayFor(m => item.Phoneno)<br />
-                            <b>Address:</b>@Html.DisplayFor(m => item.address)<br />
+                    </td>
+                    <td>
+                        @*<a href="/LoanUser/LoanIndex/@item.Id" class="btn btn-sm btn-outline-secondary">View Loan Details</a>*@
+                        <input type="button" value="View Loan Details" class="btn btn-outline-dark" onclick="getLoanDetails(@item.data.Id)" />
+                    </td>
+                    <partial name="_EditDeleteTablePartial" model="item.data.Id" />
 
-                        </td>
-                        <td>
-                            @*<a href="/LoanUser/LoanIndex/@item.Id" class="btn btn-sm btn-outline-secondary">View Loan Details</a>*@
-                            <input type="button" value="View Loan Details" class="btn btn-outline-dark" onclick="getLoanDetails(@item.Id)" />
-                        </td>
-                        <partial name="_EditDeleteTablePartial" model="item.Id" />
-
-                    </tr>
+                </tr>
                 }
             </table>
         </div>
@@ -52,9 +110,8 @@
 </div>
 
 <!--Bootstrap Pop Up modal-->
-<div id="myModal" class="modal fade" role="dialog">
+<div id="myModal" class="modal fade" role="dialog" tabindex="-1" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog">
-
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header bg-light">
@@ -74,61 +131,7 @@
 
 
 <!--End of Bootstrap Pop-Up modal-->
-@*<div id="partial" data-ajax="true"></div>*@
 
-
-@*<div id="loandetails">
-           <div class="container">
-               <h2>Loan Details</h2>
-               <div class="bg-light shadow-lg" >
-                   <div class="row">
-                       <div class="col-md-4">
-                           <img src="" alt="" id="img1" height="100" width="100" />
-                       </div>
-                       <div class="col-md-4">
-                           <label typeof="text">FirstName</label>
-                           <input type="text" id="fName" disabled="disabled" />
-                          </div>
-                       <div class="col-md-4">
-                           <label typeof="text">LastName</label>
-                           <input type="text" id="lName" disabled="disabled" />
-                       </div>
-                   </div>
-                   <div class="row ">
-                       <div class="col-md-4">
-                           @*<label typeof="text">Phone Number</label>
-                           <input type="text" id="phoneno" disabled="disabled" />
-                       </div>
-                       <div class="col-md-4">
-                           <label typeof="text">Phone Number</label>
-                           <input type="text" id="phoneno" disabled="disabled" />
-                          </div>
-
-                       <div class="col-md-4">
-                           <label typeof="text">Emi</label>
-                           <input type="text" id="emi" disabled="disabled" />
-                       </div>
-                   </div>
-                   <div class="row">
-                       <div class="col-md-4">
-
-                       </div>
-                       <div class="col-md-4">
-                           <label typeof="text">TotalLoanAmount</label>
-                           <input type="text" id="totalamount" disabled="disabled" />
-
-                       </div>
-                       <div class="col-md-4">
-                           <label typeof="text">Monthly Pay Emi</label>
-                           <input type="text" id="memi" disabled="disabled" />
-                       </div>
-                   </div>
-
-               </div>
-               <br />
-               <input type="button" id="btnback" value="Back" class="btn btn-outline-dark" />
-       </div>
-    </div>*@
 
 @section scripts
     {
@@ -167,6 +170,6 @@
             });
             //        return false;
         }
-       
+
     </script>
 }

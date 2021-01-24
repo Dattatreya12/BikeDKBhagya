@@ -100,6 +100,13 @@ namespace ASPCORE.Servcies
             return newloan.Id;
         }
 
+        //Total Loan Count
+        public int TotalLoanCount()
+        {
+            int totalloancount = _db.loanDetails.Count();
+            return totalloancount;
+        }
+
         public int Update(Loanusers item, int id)
         {
             throw new NotImplementedException();

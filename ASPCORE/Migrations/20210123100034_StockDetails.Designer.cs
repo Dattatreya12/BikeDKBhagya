@@ -4,14 +4,16 @@ using ASPCORE.AppDBContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ASPCORE.Migrations
 {
     [DbContext(typeof(VroomDbContext))]
-    partial class VroomDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210123100034_StockDetails")]
+    partial class StockDetails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,25 +62,6 @@ namespace ASPCORE.Migrations
                     b.HasIndex("ModelID");
 
                     b.ToTable("Bikes");
-                });
-
-            modelBuilder.Entity("ASPCORE.Models.InvestmentMaster", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("BrokerName");
-
-                    b.Property<DateTime>("CreatedOn");
-
-                    b.Property<int>("Investment");
-
-                    b.Property<string>("status");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("investmentMasters");
                 });
 
             modelBuilder.Entity("ASPCORE.Models.LoanDetails", b =>
@@ -214,50 +197,6 @@ namespace ASPCORE.Migrations
                     b.HasIndex("MakeID");
 
                     b.ToTable("models");
-                });
-
-            modelBuilder.Entity("ASPCORE.Models.PayoutDescriptionDetails", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description");
-
-                    b.Property<int>("payoutID");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("payoutDescriptionDetails");
-                });
-
-            modelBuilder.Entity("ASPCORE.Models.PayOutDetails", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("Bid");
-
-                    b.Property<int>("DayLoss");
-
-                    b.Property<int>("DayPayout");
-
-                    b.Property<int>("DayProfit");
-
-                    b.Property<DateTime>("ExecutedDate");
-
-                    b.Property<string>("StockName");
-
-                    b.Property<int>("TotalPayOut");
-
-                    b.Property<int>("Totalloss");
-
-                    b.Property<int>("Totalprofit");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("payOutDetails");
                 });
 
             modelBuilder.Entity("ASPCORE.Models.StockInvestorDetails", b =>

@@ -1,0 +1,196 @@
+﻿@model IEnumerable<ASPCORE.Models.ViewModels.InvestmentpayoutDetailsViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<br />
+<br />
+
+<div class="row">
+   
+    <div class="col-md-4">
+        <h2>Investment Detials</h2>
+        <table class="table table-striped border-dark">
+            <thead>
+                <tr class="table-info">
+                    <th>
+                        @Html.DisplayNameFor(model => model.BrokerName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Investment)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.CreatedOn)
+                    </th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BrokerName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Investment)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreatedOn)
+                        </td>
+                      
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+  
+    <div class="col-md-8">
+        <h2>Profi and Loss</h2>
+        <table class="table table-striped border-dark">
+            <thead>
+                <tr class="table-info">
+                    <th>
+                        @Html.DisplayNameFor(model => model.BrokerName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.StockName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DayProfit)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.DayLoss)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Totalprofit)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Totalloss)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DayPayout)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TotalPayOut)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ExecutedDate)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+
+                    <td>
+                        @Html.ActionLink(item.BrokerName, "getbyID", "ProfitAndLossDetails", new { id = item.ID })
+                        @*@Html.DisplayFor(modelItem => item.BrokerName)*@
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StockName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DayProfit)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DayLoss)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Totalprofit)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Totalloss)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DayPayout)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalPayOut)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ExecutedDate)
+                    </td>
+                    <td>
+                        <input type="button" value="PayOut Details" class="btn btn-outline-dark" onclick="getpayoutDetails(@item.ID)" />
+                    </td>
+                </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr style="font-weight:bold;">
+                    <td>Total</td>
+                    <td>StockName</td>
+                    <td>@Model.Sum(i => i.DayProfit)</td>
+                    <td>@Model.Sum(i => i.DayLoss)</td>
+                    <td>@Model.Sum(i => i.Totalprofit)</td>
+                    <td>@Model.Sum(i => i.Totalloss)</td>
+                    <td>@Model.Sum(i => i.DayPayout)</td>
+                    <td>@Model.Sum(i => i.TotalPayOut)</td>
+                    <td>Total Profit @Model.Sum(i=>i.Totalprofit - i.Totalloss) </td>
+                </tr>
+               
+
+            </tfoot>
+        </table>
+    </div>
+ </div>
+   
+
+<div id="myModal" class="modal fade" role="dialog" tabindex="-1" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h4 class="modal-title ">Profit & Loss details</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" id="ModalBody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section scripts
+    {
+    <script type="text/javascript">
+        function getpayoutDetails(payoutid) {
+            $.ajax({
+                url: "/ProfitAndLossDetails/GetbyID/" + payoutid,
+                type: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "html",
+                success: function (response) {
+                    $('#ModalBody').html(response);
+                    $('#myModal').modal('show');
+                    //$('img#img1').val(result.ImagePath);
+                    //$('input#fName').val(result.FirstName);
+                    //$('input#lName').val(result.LastName);
+                    //$('input#phoneno').val(result.Phoneno);
+                    //$('input#emi').val(result.Emi);
+                    //$('input#totalamount').val(result.TotalLoanAmount);
+                    //$('input#memi').val(result.MonthlyEmi);
+                    //$('#loandetails').show();
+                    //$('#mainpage').hide();
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+            //        return false;
+        }
+
+    </script>
+}
+
+

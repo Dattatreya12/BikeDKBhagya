@@ -1,4 +1,4 @@
-﻿@model ASPCORE.Models.ViewModels.LoanuserViewModels
+﻿@model ASPCORE.Models.ViewModels.InvestmentpayoutDetailsViewModel
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -6,18 +6,15 @@
     <div class="col-md-12">
         <div class="card mb-4 shadow-sm">
             @*<svg class="bd-placeholder-img card-img-top" width="100%" height="225"></svg>*@
-            <h2 class="shadow-lg text-center"><img src="@Html.DisplayFor(m => m.ImagePath)" width="200" height="200" /></h2>
+            <h4 class="shadow-lg text-center">@Model.StockName</h4>
             <div class="card-body">
-
-                <p><b>FirstName</b> : @Model.FirstName</p>
                 @*<input asp-for="FirstName" class="form-control" />*@ @*Update we can do*@
-                <p class="card-text"><b>LastName</b>: @Model.LastName</p>
-                <p class="card-text"><b>Emi</b>: @Model.Emi</p>
-                <p class="card-text"><b>Total Amount</b>: @Model.TotalLoanAmount</p>
+                <p class="card-text"><b>Total Investment</b>: @Model.Description</p>
+                @*<p class="card-text"><b>Total Amount</b>: @Model.EndDate</p>*@
                 <div class="d-flex justify-content-between align-items-center">
                     @*<div class="btn-group">
-                <a href="/Book/GetBook/@book.Id" class="btn btn-sm btn-outline-secondary">View Details</a>
-            </div>*@
+                            <a href="/Book/GetBook/@book.Id" class="btn btn-sm btn-outline-secondary">View Details</a>
+                        </div>*@
 
                 </div>
 

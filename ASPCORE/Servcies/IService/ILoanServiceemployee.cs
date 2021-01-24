@@ -8,11 +8,12 @@ namespace ASPCORE.Servcies.IService
 {
     public interface ILaonServiceemployee<T>
     {
-       List<T> GetAll();
+        List<T> GetAll();
         LoanuserViewModels GetById(int id);
         int Insert(T item);
         int Update(T item, int id);
         int Delete(int id);
+        int TotalLoanCount();
         
     } 
 }
