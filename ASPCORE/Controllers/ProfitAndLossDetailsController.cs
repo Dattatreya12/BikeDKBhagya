@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ASPCORE.AppDBContext;
+using ASPCORE.Models;
 using ASPCORE.Models.ViewModels;
 using ASPCORE.Servcies.IService;
 using Microsoft.AspNetCore.Hosting.Internal;
@@ -29,14 +30,16 @@ namespace ASPCORE.Controllers
             return View(stockdetails);
         }
        
-        public PartialViewResult GetbyID(int ID)
+        public PartialViewResult  GetbyID(int ID)
         {
-            //var Employee = _db.ListAll().Find(x => x.EmployeeID.Equals(ID));
+
             //var profitlossdetails = _db.payoutDescriptionDetails.Where(i => i.payoutID == ID /*&& i.Nmae == "abc"*/).firstordefault();
-            var profitlossdetails = _db.payoutDescriptionDetails.Where(i => i.payoutID == ID);
-            return PartialView("_ProfitLossDetails", profitlossdetails);
+
+            //return PartialView("_ProfitLossDetails", profitlossdetails);
             //var Employee= _db.makes.Find(ID);
-           // return View();
+            var individualstock = _iprofitloss.GetById(ID);
+            return PartialView("_ProfitAndLoassDescription", individualstock);
+            
 
         }
     }

@@ -17,7 +17,8 @@ namespace ASPCORE.Models.ViewModels
         public DateTime ExecutedDate { get; set; }
         public int Bid { get; set; }
         public string StockName { get; set; }
-        public PayoutDescriptionDetails Description { get; set; }
+        public string Description { get; set; }
+        
         //public List<InvestmentMaster> investmentMasters { get; set; }
         //public List<PayOutDetails> PayOutDetails { get; set; }
     }

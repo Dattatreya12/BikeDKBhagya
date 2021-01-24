@@ -74,13 +74,17 @@ namespace ASPCORE.Servcies.Service
             return result;
         }
 
-        //public PayoutDescriptionDetails GetById(int id)
-        //{
+        public InvestmentpayoutDetailsViewModel GetById(int id)
+        {
 
-        //    var stockdetails = from desc in _db.payoutDescriptionDetails
-        //                                                                 select desc; 
+            InvestmentpayoutDetailsViewModel profitorloss = (from Pd in _db.payOutDetails
+                                                 where Pd.Bid == id
+                                                 select new InvestmentpayoutDetailsViewModel
+                                                 {
+                                                     Description = Pd.Description,
+                                                 }).FirstOrDefault();
 
-        //    return stockdetails;
-        //}
+            return profitorloss;
+        }
     }
 }

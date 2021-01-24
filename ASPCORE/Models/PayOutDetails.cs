@@ -17,6 +17,6 @@ namespace ASPCORE.Models
         public int TotalPayOut { get; set; }
         public DateTime ExecutedDate { get; set; }
         public int Bid { get; set; }
-
+        public string Description { get; set; }
     }
 }
